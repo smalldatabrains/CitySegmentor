@@ -63,7 +63,7 @@ The model is trained on the [Corrosion_Rust dataset](https://huggingface.co/data
 - PIL (Pillow)
 - tkinterdnd2
 - datasets (Hugging Face)
-
+²
 ## Future Work
 
 segmentation instead of labelling
