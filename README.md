@@ -64,6 +64,10 @@ The model is trained on the [Corrosion_Rust dataset](https://huggingface.co/data
 - tkinterdnd2
 - datasets (Hugging Face)
 
+## Future Work
+
+segmentation instead of labelling
+
 ## License
 
 This project is open-source and available under the MIT License.
