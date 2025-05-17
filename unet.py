@@ -39,7 +39,7 @@ class UNET(nn.Module):
         self.bottleneck = Conv2Layer(features[-1], features[-1]*2)
         self.final_conv = nn.Conv2d(features[0], out_channels,kernel_size=1)
 
-    def forward(self,x):
+    def forward(self,x): #forward propagation
         skip_connections=[]
         for down in self.downs:
             x=down(x)
@@ -57,7 +57,8 @@ class UNET(nn.Module):
             x=self.ups[idx+1](concat_skip)
         return self.final_conv(x)
     
-
+    def train(self,x): #backward propagation, needs a loader, model, optimizer, loss function, scaler
+        pass
 
 def test():
     x=torch.randn((3,1,160,160))
