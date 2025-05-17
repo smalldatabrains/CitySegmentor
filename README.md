@@ -66,7 +66,8 @@ The model is trained on the [Corrosion_Rust dataset](https://huggingface.co/data
 ²
 ## Future Work
 
-segmentation instead of labelling
+segmentation instead of labelling using UNET architecture
+![alt text](unet.png)
 
 ## License
 
