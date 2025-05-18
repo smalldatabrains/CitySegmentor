@@ -24,6 +24,7 @@ A deep learning application that uses a Convolutional Neural Network (CNN) to de
 - `predict_app.py`: GUI application for making predictions
 - `requirements.txt`: List of Python dependencies
 - `best_model.pth`: Trained model checkpoint (created after training)
+- `unet.py`: UNET architecture neural network
 
 ## Usage
 
@@ -63,7 +64,7 @@ The model is trained on the [Corrosion_Rust dataset](https://huggingface.co/data
 - PIL (Pillow)
 - tkinterdnd2
 - datasets (Hugging Face)
-²
+
 ## Future Work
 
 Segmentation instead of labelling using UNET architecture
@@ -80,9 +81,13 @@ The encoder layers are concatenated with the decoder layers. What does this desi
 3. Improved gradient flow : helps to banish vanishing gradient problem (I do not exactly see how, go deeper on that topic)
 4. Help reconstruction during the decoder path (images would be less blury)
 
-Reflection about kernel and stride:
+Reflection about convolution, kernels and strides:
+
 small kernel sees more details, bigger kernel capture global feature but are more expensive.
+
 small  stride also capture more details but requires higher computation
+
+Each channel of a channels encode different features. Kernel sizes are defined but each kernel start randomly, thus ending in the end to different features map.
 
 ## License
 
