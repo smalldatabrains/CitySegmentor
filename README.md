@@ -66,8 +66,19 @@ The model is trained on the [Corrosion_Rust dataset](https://huggingface.co/data
 ²
 ## Future Work
 
-segmentation instead of labelling using UNET architecture
+Segmentation instead of labelling using UNET architecture
 ![alt text](unet.png)
+
+UNET network is made of several stack of convolution with a pooling layer to reduce dimension between them. Each convolution layers are able to extract information and are called feature maps.
+
+The encoder layers are concatenated with the decoder layers. What does this design choice bring to the system?
+1. Recovering spatial information : counter the loss of fine details information such as edges, textures or boundaries
+2. Combining High Level and Low Level features
+   Encoder tends to capture low level features (edges and textures)
+   Decoder tends to capture high level and abstract (semantic information)
+   By combinating the two the networkds combines both
+3. Improved gradient flow : helps to banish vanishing gradient problem (I do not exactly see how, go deeper on that topic)
+4. Help reconstruction during the decoder path (images would be less blury)
 
 ## License
 
