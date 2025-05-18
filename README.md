@@ -80,6 +80,10 @@ The encoder layers are concatenated with the decoder layers. What does this desi
 3. Improved gradient flow : helps to banish vanishing gradient problem (I do not exactly see how, go deeper on that topic)
 4. Help reconstruction during the decoder path (images would be less blury)
 
+Reflection about kernel and stride:
+small kernel sees more details, bigger kernel capture global feature but are more expensive.
+small  stride also capture more details but requires higher computation
+
 ## License
 
 This project is open-source and available under the MIT License.
