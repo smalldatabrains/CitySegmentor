@@ -8,24 +8,29 @@ import { motion } from 'framer-motion';
 export default function App() {
   const [image, setImage] = useState<string | null>(null);
   const [maskImage, setMaskImage] = useState<string | null>(null);
+  const [legend, setLegend] = useState<{ label: string; color: string }[]>([]);
 
   const onDrop = useCallback(async (acceptedFiles: FileWithPath[]) => {
     if (acceptedFiles.length === 0) return;
 
     const file = acceptedFiles[0];
     setImage(URL.createObjectURL(file));
-    setMaskImage(null); // reset mask while loading new
+    setMaskImage(null);
+    setLegend([]);
 
     const formData = new FormData();
-    formData.append('file', file);
+    formData.append('image', file);
 
     try {
       const response = await axios.post('http://localhost:5000/api/inference', formData);
-      const maskUrl = URL.createObjectURL(response.data);
+      const base64Image = response.data.segmentation_mask;
+      const maskUrl = `data:image/png;base64,${base64Image}`;
       setMaskImage(maskUrl);
+      setLegend(response.data.legend || []);
     } catch (error) {
       console.error('Error uploading file:', error);
       setMaskImage(null);
+      setLegend([]);
     }
   }, []);
 
@@ -43,7 +48,7 @@ export default function App() {
     <div
       style={{
         width: '100vw',
-        height: '100vh',
+        minHeight: '100vh',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
@@ -53,7 +58,7 @@ export default function App() {
       }}
     >
       <motion.div
-        style={{ width: '100%', maxWidth: 960 }}
+        style={{ width: '100%', maxWidth: 1000 }}
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6 }}
@@ -91,62 +96,111 @@ export default function App() {
           </div>
 
           {image && maskImage && (
-            <div
-              style={{
-                marginTop: 24,
-                display: 'grid',
-                gridTemplateColumns: '1fr 1fr',
-                gap: 24,
-              }}
-            >
-              <div style={{ textAlign: 'center' }}>
-                <h2
-                  style={{
-                    marginBottom: 8,
-                    fontSize: 16,
-                    fontWeight: 600,
-                    color: '#374151',
-                  }}
-                >
-                  Original Image
-                </h2>
-                <img
-                  src={image}
-                  alt="Uploaded preview"
-                  style={{
-                    maxHeight: 384,
-                    margin: '0 auto',
-                    borderRadius: 16,
-                    boxShadow: '0 4px 12px rgba(0, 0, 0, 0.1)',
-                    maxWidth: '100%',
-                    objectFit: 'contain',
-                  }}
-                />
+            <div style={{ marginTop: 24 }}>
+              <div
+                style={{
+                  display: 'grid',
+                  gridTemplateColumns: '1fr 1fr',
+                  gap: 24,
+                }}
+              >
+                <div style={{ textAlign: 'center' }}>
+                  <h2
+                    style={{
+                      marginBottom: 8,
+                      fontSize: 16,
+                      fontWeight: 600,
+                      color: '#374151',
+                    }}
+                  >
+                    Original Image
+                  </h2>
+                  <img
+                    src={image}
+                    alt="Uploaded preview"
+                    style={{
+                      maxHeight: 384,
+                      margin: '0 auto',
+                      borderRadius: 16,
+                      boxShadow: '0 4px 12px rgba(0, 0, 0, 0.1)',
+                      maxWidth: '100%',
+                      objectFit: 'contain',
+                    }}
+                  />
+                </div>
+                <div style={{ textAlign: 'center' }}>
+                  <h2
+                    style={{
+                      marginBottom: 8,
+                      fontSize: 16,
+                      fontWeight: 600,
+                      color: '#374151',
+                    }}
+                  >
+                    Segmentation Mask
+                  </h2>
+                  <img
+                    src={maskImage}
+                    alt="Segmentation result"
+                    style={{
+                      maxHeight: 384,
+                      margin: '0 auto',
+                      borderRadius: 16,
+                      boxShadow: '0 4px 12px rgba(0, 0, 0, 0.1)',
+                      maxWidth: '100%',
+                      objectFit: 'contain',
+                    }}
+                  />
+                </div>
               </div>
-              <div style={{ textAlign: 'center' }}>
-                <h2
-                  style={{
-                    marginBottom: 8,
-                    fontSize: 16,
-                    fontWeight: 600,
-                    color: '#374151',
-                  }}
-                >
-                  UNet Mask
-                </h2>
-                <img
-                  src={maskImage}
-                  alt="UNet result"
-                  style={{
-                    maxHeight: 384,
-                    margin: '0 auto',
-                    borderRadius: 16,
-                    boxShadow: '0 4px 12px rgba(0, 0, 0, 0.1)',
-                    maxWidth: '100%',
-                    objectFit: 'contain',
-                  }}
-                />
-              </div>
+
+              {/* Legend Section */}
+              {legend.length > 0 && (
+                <div style={{ marginTop: 32 }}>
+                  <h3
+                    style={{
+                      fontSize: 16,
+                      fontWeight: 600,
+                      color: '#374151',
+                      marginBottom: 12,
+                    }}
+                  >
+                    Legend
+                  </h3>
+                  <div
+                    style={{
+                      display: 'grid',
+                      gridTemplateColumns: 'repeat(auto-fill, minmax(120px, 1fr))',
+                      gap: 12,
+                    }}
+                  >
+                    {legend.map((item, idx) => (
+                      <div
+                        key={idx}
+                        style={{
+                          display: 'flex',
+                          alignItems: 'center',
+                          gap: 8,
+                          padding: 6,
+                          borderRadius: 8,
+                          background: '#f3f4f6',
+                        }}
+                      >
+                        <div
+                          style={{
+                            width: 16,
+                            height: 16,
+                            borderRadius: 4,
+                            backgroundColor: item.color,
+                            border: '1px solid #d1d5db',
+                          }}
+                        />
+                        <span style={{ fontSize: 14, color: '#374151' }}>{item.label}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
             </div>
           )}
         </div>
