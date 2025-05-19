@@ -3,3 +3,4 @@ torchvision
 datasets
 pillow
 tkinterdnd2
+flask
