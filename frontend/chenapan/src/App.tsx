@@ -1,4 +1,4 @@
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useEffect } from 'react';
 import { useDropzone } from 'react-dropzone';
 import type { FileWithPath } from 'react-dropzone';
 
@@ -43,6 +43,16 @@ export default function App() {
     onDragOver: undefined,
     onDragLeave: undefined
   });
+
+  useEffect(() => {
+  const defaultImage = '/paris.jpg';
+  const defaultMask = '/mask_paris.png';
+
+  setImage(defaultImage);
+  setMaskImage(defaultMask);
+
+  }, []);
+
 
   return (
     <div
