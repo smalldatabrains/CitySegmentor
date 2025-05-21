@@ -1,0 +1,27 @@
+version: '3.8'
+
+services:
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    ports:
+      - "5001:5001"
+    volumes:
+      - ./backend:/app
+    environment:
+      - FLASK_ENV=development
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    ports:
+      - "3001:3001"
+    volumes:
+      - ./frontend/chenapan:/app
+      - /app/node_modules
+    depends_on:
+      - backend
+    environment:
+      - REACT_APP_API_URL=http://localhost:5001
