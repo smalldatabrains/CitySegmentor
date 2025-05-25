@@ -1,6 +1,12 @@
 torch
 torchvision
 datasets
-pillow
 tkinterdnd2
 flask
+flask-cors
+flask-socketio
+pillow
+numpy
+matplotlib
+
+
