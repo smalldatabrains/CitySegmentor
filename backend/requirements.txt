@@ -1,10 +1,11 @@
 --extra-index-url https://download.pytorch.org/whl/cpu
 torch==2.1.0+cpu
 torchvision==0.16.0+cpu
-datasets
-flask
-flask-cors
-flask-socketio
-pillow
-numpy
-transformers
+datasets==2.14.7
+flask==3.0.0
+flask-cors==4.0.0
+flask-socketio==5.3.6
+pillow==10.1.0
+numpy==1.24.3
+transformers==4.35.2
+matplotlib==3.8.2

@@ -7,13 +7,18 @@ import torch
 import numpy as np
 import matplotlib
 matplotlib.use('Agg')  # For headless servers
+import logging
 
 from transformers import AutoImageProcessor, SegformerForSemanticSegmentation
+
+# Configure logging
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
 
 app = Flask(__name__)
 CORS(app, resources={r"/api/*": {"origins": "*"}})
 
-
+logger.info("Starting model loading...")
 # Load model and processor with auth token
 processor = AutoImageProcessor.from_pretrained(
     "nvidia/segformer-b0-finetuned-cityscapes-1024-1024",
@@ -22,6 +27,7 @@ model = SegformerForSemanticSegmentation.from_pretrained(
     "nvidia/segformer-b0-finetuned-cityscapes-1024-1024",
 )
 model.eval()
+logger.info("Model loaded successfully!")
 
 # Cityscapes labels (19 classes)
 CITYSCAPES_LABELS = [
