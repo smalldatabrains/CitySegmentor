@@ -5,23 +5,22 @@ services:
     build:
       context: ./backend
       dockerfile: Dockerfile
+    container_name: flaskBackend
+    restart: always
     ports:
-      - "5001:5001"
+      - "5000:5000"
     volumes:
       - ./backend:/app
     environment:
       - FLASK_ENV=development
 
   frontend:
-    build:
-      context: ./frontend
-      dockerfile: Dockerfile
-    ports:
-      - "3001:3001"
-    volumes:
-      - ./frontend/chenapan:/app
-      - /app/node_modules
-    depends_on:
+     build: ./frontend/chenapan
+     container_name: reactFrontend
+     restart: always
+     ports:
+      - "80:80"
+     depends_on:
       - backend
-    environment:
-      - REACT_APP_API_URL=http://localhost:5001
+     env_file:
+      - ./frontend/chenapan/.env
