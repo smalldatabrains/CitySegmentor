@@ -89,6 +89,11 @@ small  stride also capture more details but requires higher computation
 
 Each channel of a channels encode different features. Kernel sizes are defined but each kernel start randomly, thus ending in the end to different features map.
 
+## Frontend
+for demonstration purpose a frontend is provided. It is a React application that uses the backend API to make predictions. Loaded model is able to segment cityscapes images.
+
+![alt text](image.png)
+
 ## License
 
 This project is open-source and available under the MIT License.
