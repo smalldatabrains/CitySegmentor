@@ -5,8 +5,10 @@ import type { FileWithPath } from 'react-dropzone';
 import axios from 'axios';
 import { motion } from 'framer-motion';
 
-// Use environment variable or fallback to default
-const API_URL = '/api';
+// Get the API URL based on environment
+const API_URL = process.env.NODE_ENV === 'production'
+  ? 'http://neo4j.smalldatabrains.com/api'
+  : '/api';
 
 export default function App() {
   const [image, setImage] = useState<string | null>(null);

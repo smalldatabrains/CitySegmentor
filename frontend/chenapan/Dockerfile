@@ -1,5 +1,8 @@
-# Use an official Node.js image for building the React app
-FROM node:18-alpine
+# Build stage
+FROM node:18-alpine AS builder
+
+# Install TypeScript globally
+RUN npm install -g typescript
 
 # Set the working directory inside the container
 WORKDIR /app
@@ -13,17 +16,23 @@ RUN npm install
 # Copy the rest of the app's source code
 COPY . .
 
+# Set permissions for the entire /app directory
+RUN chmod -R 755 /app && \
+    chown -R node:node /app && \
+    chmod +x node_modules/.bin/tsc && \
+    chmod +x node_modules/.bin/vite
+
 # Create a .env file with default values
 RUN echo "VITE_API_URL=http://localhost:5000" > .env
 
-# Build the app
+# Build the app with proper permissions
 RUN npm run build
 
-# Use a lightweight nginx image to serve the built app
+# Production stage
 FROM nginx:alpine
 
 # Copy the built app from the previous stage
-COPY --from=0 /app/dist /usr/share/nginx/html
+COPY --from=builder /app/dist /usr/share/nginx/html
 
 # Copy nginx configuration
 COPY nginx.conf /etc/nginx/conf.d/default.conf
