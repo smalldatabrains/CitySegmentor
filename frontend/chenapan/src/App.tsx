@@ -7,8 +7,12 @@ import { motion } from 'framer-motion';
 
 // Get the API URL based on environment
 const API_URL = process.env.NODE_ENV === 'production'
-  ? 'http://neo4j.smalldatabrains.com/api'
-  : '/api';
+  ? 'http://segmentation.smalldatabrains.com/api'
+  : '/api';  // In development, Vite will proxy this
+
+// Configure axios defaults
+axios.defaults.headers.common['Access-Control-Allow-Origin'] = '*';
+axios.defaults.withCredentials = false;
 
 export default function App() {
   const [image, setImage] = useState<string | null>(null);
@@ -67,7 +71,7 @@ export default function App() {
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
-        background: 'linear-gradient(to bottom right, #6366f1, #a855f7)',
+        background: 'linear-gradient(to bottom right,rgb(20, 20, 41),rgb(101, 99, 109))',
         padding: 20,
         boxSizing: 'border-box',
       }}

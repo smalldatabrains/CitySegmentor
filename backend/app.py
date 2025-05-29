@@ -19,14 +19,12 @@ logger = logging.getLogger(__name__)
 app = Flask(__name__)
 CORS(app, resources={
     r"/api/*": {
-        "origins": [
-            "http://localhost:3000",
-            "http://neo4j.smalldatabrains.com"
-        ],
+        "origins":"*",
         "methods": ["GET", "POST", "OPTIONS"],
-        "allow_headers": ["Content-Type", "Authorization"],
+        "allow_headers": ["Content-Type", "Authorization", "X-Requested-With"],
         "expose_headers": ["Content-Range", "X-Content-Range"],
-        "supports_credentials": True
+        "max_age": 1728000,
+        "supports_credentials": False
     }
 })
 
@@ -106,10 +104,14 @@ def segment_image(image_bytes):
 def health_check():
     return jsonify({"status": "healthy"}), 200
 
-@app.route('/api/inference', methods=['POST'])
+@app.route('/api/inference', methods=['POST', 'OPTIONS'])
 def inference():
+    if request.method == 'OPTIONS':
+        return '', 204
+    
     if 'image' not in request.files:
         return jsonify({"error": "No image file uploaded"}), 400
+    
     file = request.files['image']
     image_bytes = file.read()
 

@@ -23,7 +23,7 @@ RUN chmod -R 755 /app && \
     chmod +x node_modules/.bin/vite
 
 # Create a .env file with default values
-RUN echo "VITE_API_URL=http://localhost:5000" > .env
+RUN echo "VITE_API_URL=http://segmentation.smalldatabrains.com" > .env
 
 # Build the app with proper permissions
 RUN npm run build

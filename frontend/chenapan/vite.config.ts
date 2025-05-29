@@ -10,11 +10,11 @@ export default defineConfig({
     emptyOutDir: true,
   },
   server: {
-    proxy: process.env.NODE_ENV === 'development' ? {
+    proxy: {
       '/api': {
         target: 'http://localhost:5000',
-        changeOrigin: true,
+        changeOrigin: true
       }
-    } : undefined
+    }
   }
 });

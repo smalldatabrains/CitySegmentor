@@ -7,8 +7,8 @@ services:
       dockerfile: Dockerfile
     container_name: flaskBackend
     restart: always
-    ports:
-      - "5000:5000"
+    expose:
+      - "5000"
     volumes:
       - ./backend:/app
       - model-data:/app/models
@@ -25,7 +25,9 @@ services:
     container_name: reactFrontend
     restart: always
     ports:
-      - "3000:80"
+      - "80:80"  # Map to standard HTTP port
+    depends_on:
+      - backend
     networks:
       - app-network
 
