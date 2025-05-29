@@ -8,6 +8,7 @@ import numpy as np
 import matplotlib
 matplotlib.use('Agg')  # For headless servers
 import logging
+import os
 
 from transformers import AutoImageProcessor, SegformerForSemanticSegmentation
 
@@ -18,14 +19,25 @@ logger = logging.getLogger(__name__)
 app = Flask(__name__)
 CORS(app, resources={r"/api/*": {"origins": "*"}})
 
+# Define model paths
+MODEL_ID = "nvidia/segformer-b0-finetuned-cityscapes-1024-1024"
+MODEL_DIR = os.path.join(os.path.dirname(__file__), "models")
+os.makedirs(MODEL_DIR, exist_ok=True)
+
 logger.info("Starting model loading...")
-# Load model and processor with auth token
-processor = AutoImageProcessor.from_pretrained(
-    "nvidia/segformer-b0-finetuned-cityscapes-1024-1024",
-)
-model = SegformerForSemanticSegmentation.from_pretrained(
-    "nvidia/segformer-b0-finetuned-cityscapes-1024-1024",
-)
+# Download and save model locally if not already present
+if not os.path.exists(os.path.join(MODEL_DIR, "config.json")):
+    logger.info(f"Downloading model {MODEL_ID} to {MODEL_DIR}...")
+    processor = AutoImageProcessor.from_pretrained(MODEL_ID)
+    model = SegformerForSemanticSegmentation.from_pretrained(MODEL_ID)
+    processor.save_pretrained(MODEL_DIR)
+    model.save_pretrained(MODEL_DIR)
+    logger.info("Model downloaded and saved successfully!")
+else:
+    logger.info("Loading model from local directory...")
+    processor = AutoImageProcessor.from_pretrained(MODEL_DIR)
+    model = SegformerForSemanticSegmentation.from_pretrained(MODEL_DIR)
+
 model.eval()
 logger.info("Model loaded successfully!")
 
@@ -78,6 +90,10 @@ def segment_image(image_bytes):
     ]
 
     return base64_mask, legend
+
+@app.route('/api/health', methods=['GET'])
+def health_check():
+    return jsonify({"status": "healthy"}), 200
 
 @app.route('/api/inference', methods=['POST'])
 def inference():

@@ -5,6 +5,9 @@ import type { FileWithPath } from 'react-dropzone';
 import axios from 'axios';
 import { motion } from 'framer-motion';
 
+// Use environment variable or fallback to default
+const API_URL = '/api';
+
 export default function App() {
   const [image, setImage] = useState<string | null>(null);
   const [maskImage, setMaskImage] = useState<string | null>(null);
@@ -22,7 +25,7 @@ export default function App() {
     formData.append('image', file);
 
     try {
-      const response = await axios.post('http://localhost:5000/api/inference', formData);
+      const response = await axios.post(`${API_URL}/inference`, formData);
       const base64Image = response.data.segmentation_mask;
       const maskUrl = `data:image/png;base64,${base64Image}`;
       setMaskImage(maskUrl);
