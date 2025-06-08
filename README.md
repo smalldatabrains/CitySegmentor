@@ -1,6 +1,8 @@
-# Rust Detection CNN Classifier
+# UNET Segmentation and detection CNN Classifier
 
-A deep learning application that uses a Convolutional Neural Network (CNN) to segment cityscape. The project includes both a training module and a user-friendly GUI application for making predictions.
+A deep learning application that uses a Convolutional Neural Network (CNN) UNET architecture to segment cityscape. The project includes both a training module and a user-friendly GUI application for making predictions.
+
+classifier.py also inclue a simplier model to train for classification tasks.
 
 ## Features
 
