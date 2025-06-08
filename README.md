@@ -1,11 +1,10 @@
 # Rust Detection CNN Classifier
 
-A deep learning application that uses a Convolutional Neural Network (CNN) to detect rust in images. The project includes both a training module and a user-friendly GUI application for making predictions.
+A deep learning application that uses a Convolutional Neural Network (CNN) to segment cityscape. The project includes both a training module and a user-friendly GUI application for making predictions.
 
 ## Features
 
 - CNN model built with PyTorch
-- Training on the Corrosion_Rust dataset
 - Real-time predictions through a drag-and-drop interface
 - Model checkpoint saving and loading
 - Confidence scores for predictions
@@ -52,9 +51,6 @@ The CNN model consists of:
 - Fully connected layers with dropout for regularization
 - Output layer for binary classification (Rust/No Rust)
 
-## Dataset
-
-The model is trained on the [Corrosion_Rust dataset](https://huggingface.co/datasets/BinKhoaLe1812/Corrosion_Rust) from Hugging Face, which contains images of rusted and non-rusted surfaces.
 
 ## Requirements
 

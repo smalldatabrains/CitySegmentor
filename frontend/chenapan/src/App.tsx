@@ -109,7 +109,7 @@ export default function App() {
               <p style={{ fontSize: 18, color: '#4f46e5' }}>Drop the image here...</p>
             ) : (
               <p style={{ fontSize: 18, color: '#374151' }}>
-                Drag & drop an image here, or click to select one
+                Drag & drop an image here , or click to select one (less than 1Mb)
               </p>
             )}
           </div>
